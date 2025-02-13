@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="rapiddatatech.getcountryname.GetCountryName" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Get Country Name</name>
+    <description>Widget for extracting Country Name from a phone number (mobile or telephone)</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="phoneNumber" type="attribute" required="true">
+                <caption>Phone Number (Mobile or Telephone)</caption>
+                <description>Specify the phone number (mobile or telephone) attribute to extract the country name</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="cssClass" type="string">
+                <caption>CSS Class</caption>
+                <description>Specify a CSS class for custom styling</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
