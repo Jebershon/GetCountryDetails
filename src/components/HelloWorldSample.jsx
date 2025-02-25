@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import React from "react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
-// import { getCountryByCode } from 'country-kit';
+import { getCountryByCode } from 'country-kit';
 const countryCodeMap = {
     "AF": "AFG",
     "AX": "ALA",
@@ -255,52 +255,72 @@ const countryCodeMap = {
 }; 
 
 function getAlpha3Code(alpha2Code) {
-    // Check if the alpha-2 code exists in the mapping
     if (countryCodeMap[alpha2Code]) {
-        return countryCodeMap[alpha2Code];  // Return corresponding alpha-3 code
+        return countryCodeMap[alpha2Code];
     } else {
-        return "NaN";  // Handle invalid country code
+    return ""; 
     }
 }
-
-function getCountryNameFromPhoneNumber(phoneNumber) {
-    // Parse the phone number
+function getCountryCodeFromPhoneNumber(phoneNumber) {
     const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber);
     if (!parsedPhoneNumber) {
-        console.error("Invalid phone number format");
-        return null;
+        console.error("Phone Country code not mentioned");
+        return "";
     }
-
-    // const countryCode = parsedPhoneNumber.country;
-    // const country = getCountryByCode(countryCode);
-    // console.info("Country details:", country.name);
-    
     const countryCode = parsedPhoneNumber.country;
-
+    console.info("countryCode: "+countryCode);
+    return countryCode;
+}
+function getCountryCode3FromPhoneNumber(phoneNumber) {
+    const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber);
+    if (!parsedPhoneNumber) {
+        console.error("Phone Country code not mentioned");
+        return "";
+    }
+    const countryCode = parsedPhoneNumber.country;
+    console.info("countryCode: "+countryCode);
     const alpha3Code = getAlpha3Code(countryCode);
-
-    console.info("Alpha-3 country code:", alpha3Code);
-
+    console.info("Alpha-3 country code: "+alpha3Code);
     return alpha3Code;
 }
-
-export function HelloWorldSample({ phoneNumber, cssClass}) {
-    console.info("Before Extraction : "+phoneNumber.value);
-     // Ensure phoneNumber is a string
-     if (typeof phoneNumber.value !== "string") {
-        console.error("Phone number must be a string");
-        return <div className="widget-hello-world">Invalid phone number input</div>;
+function getCountryNameFromPhoneNumber(phoneNumber) {
+    const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber);
+    if (!parsedPhoneNumber) {
+        console.error("Phone Country code not mentioned");
+        return "";
     }
-    // Validate and process the phone number
-    const countryName = getCountryNameFromPhoneNumber(phoneNumber.value);
+    const countryCode = parsedPhoneNumber.country;
+    const country = getCountryByCode(countryCode);
+    console.info("Country details:"+country.name);
+    return country.name;
+}
 
-    // Render the message
+export function HelloWorldSample({ phoneNumber, cssClass ,countrySelection}) {
+    let countryName = "";
+    console.info("Number Provided : "+phoneNumber.value);
+    if (phoneNumber.value === null || phoneNumber.value === undefined) {
+        console.warn("Phone number is required and cannot be null or undefined or not a String");
+        return <div></div>;
+    }
+    if(countrySelection === "countryName"){
+        countryName = getCountryNameFromPhoneNumber(phoneNumber.value);
+        console.info("getCountryNameFromPhoneNumber : "+countryName);
+    }
+    else if(countrySelection === "alphaCode2"){
+        countryName = getCountryCodeFromPhoneNumber(phoneNumber.value);
+        console.info("getCountryalphaCode2FromPhoneNumber : "+countryName);
+    }
+    else{
+        countryName = getCountryCode3FromPhoneNumber(phoneNumber.value);
+        console.info("getCountryNameFromPhoneNumber : "+countryName);
+    }
+
     return (
         <div className={cssClass}>
             {countryName ? (
                 <div className="text">{countryName}</div>
             ) : (
-                <div>Invalid phone number</div>
+                <div></div>
             )}
         </div>
     );
